@@ -7,4 +7,5 @@
 3. [VSCode](vscode/README.md)
 4. [WSL](wsl/README.md)
 5. [Git](git/README.md)
+6. [linux](linux/README.md)
 
