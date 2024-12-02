@@ -21,15 +21,13 @@ api_app.add_middleware(
 
 @api_app.post("/blogs")
 async def save_blog(blog: Post):
-    print(blog)
-   
     data = []
     # Open and read the JSON file
     with open('handlers/database/data.json', 'r') as file:
         data = json.load(file)
         
         data.append({
-            "id": str(len(data) + 1),
+            "id": len(data) + 1,
             "title": blog.title,
             "content": blog.content,
             "author": blog.author,
@@ -44,20 +42,20 @@ async def save_blog(blog: Post):
     return {"message": "Blog saved successfully"}
 
 @api_app.get("/blogs/{id}")
-async def get_blog_by_id(req: Request, id: str):
-    data = {}
+async def get_blog_by_id(req: Request, id: int):
+    data = []
     # Open and read the JSON file
     with open('handlers/database/data.json', 'r') as file:
         data = json.load(file)
 
-    resp = data.get(id)
-    custom_logger.logger.info("Blog retrieved successfully with id %s", str(resp.id))
+    resp = data[id-1]
+    custom_logger.logger.info("Blog retrieved successfully with id %s", str(resp["id"]))
     
     return {"message": "Blog retrieved successfully", "data": resp}
 
 @api_app.get("/blogs")
 async def get_blogs(req: Request):
-    data = {}
+    data = []
     # Open and read the JSON file
     with open('handlers/database/data.json', 'r') as file:
         data = json.load(file)
@@ -65,12 +63,12 @@ async def get_blogs(req: Request):
     return {"message": "Blogs retrieved successfully", "data": data}
 
 @api_app.delete("/blogs/{id}")
-async def delete_blog_by_id(req: Request, id: str):
-    data = {}
+async def delete_blog_by_id(req: Request, id: int):
+    data = []
     # Open and read the JSON file
     with open('handlers/database/data.json', 'r') as file:
         data = json.load(file)
-    data.pop(id)
+    data.pop(id-1)
     # Write to the JSON file
     with open('handlers/database/data.json', 'w') as file:
         json.dump(data, file)
@@ -79,20 +77,22 @@ async def delete_blog_by_id(req: Request, id: str):
     return {"message": "Blog deleted successfully"}
 
 
-@api_app.patch("/blogs/{id}")
-async def update_blog_by_id(req: Request, id: str, blog: Post):
+@api_app.put("/blogs/{id}")
+async def update_blog_by_id(req: Request, id: int, blog: Post):
     data = {}
     # Open and read the JSON file
     with open('handlers/database/data.json', 'r') as file:
         data = json.load(file)
-    data[id] = {
+    data[id-1] = {
+        "id": id,
         "title": blog.title,
         "content": blog.content,
-        "author": blog.author
+        "author": blog.author,
+        "created_at": data[id-1]["created_at"]
     }
     # Write to the JSON file
     with open('handlers/database/data.json', 'w') as file:
         json.dump(data, file)
     
     custom_logger.logger.info("Blog updated successfully with id %s", str(id))
-    return {"message": "Blog updated successfully", "data": data[id]}
+    return {"message": "Blog updated successfully", "data": data[id-1]}

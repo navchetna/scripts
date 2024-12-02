@@ -1,31 +1,54 @@
-import React, {useEffect, useState} from 'react'
-import Layout from '@/components/Layout'
-import { BlogPost } from '@/interfaces/BlogPost'
-import { Card, CardContent, Typography, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material'
-import Link from 'next/link'
-import { API_URL } from '@/lib/const'
-import axios from 'axios'
+import React, { useEffect, useState } from "react";
+import Layout from "@/components/Layout";
+import { BlogPost } from "@/interfaces/BlogPost";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@mui/material";
+import Link from "next/link";
+import { API_URL } from "@/lib/const";
+import axios from "axios";
+import { useRouter } from "next/router";
 
 interface HomeProps {
-  posts: BlogPost[]
+  posts: BlogPost[];
 }
 
 export default function Home() {
-  
-  const [posts, setPosts] = useState<BlogPost[]>([])
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const router = useRouter();
+
+  const handleDelete = async (id: number) => {
+    try {
+      await axios.delete(`${API_URL}/blogs/${id}`);
+      setPosts(posts.filter((post) => post.id !== id));
+    } catch (error) {
+      console.error(error);
+    }
+    router.push("/");
+  };
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const res = await axios.get(`${API_URL}/blogs`)
-        setPosts(res.data.data)
+        const res = await axios.get(`${API_URL}/blogs`);
+        setPosts(res.data.data);
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
-    }
+    };
 
-    fetchPosts()
-  }, [])
+    fetchPosts();
+  }, []);
 
   return (
     <Layout>
@@ -51,14 +74,26 @@ export default function Home() {
               {posts && posts.length > 0 ? (
                 posts.map((post) => (
                   <TableRow key={post.id}>
-                    <TableCell>{new Date(post.created_at).toLocaleDateString()}</TableCell>
+                    <TableCell>
+                      {new Date(post.created_at).toLocaleDateString()}
+                    </TableCell>
                     <TableCell>{post.title}</TableCell>
                     <TableCell>{post.author}</TableCell>
+                    <TableCell>
+                      <Button href={`/create?action=edit&id=${post.id}`}>
+                        Edit
+                      </Button>
+                      <Button onClick={() => handleDelete(post.id)}>
+                        Delete
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={3} align="center">No posts available.</TableCell>
+                  <TableCell colSpan={3} align="center">
+                    No posts available.
+                  </TableCell>
                 </TableRow>
               )}
             </TableBody>
@@ -77,7 +112,8 @@ export default function Home() {
                     {post.title}
                   </Typography>
                   <Typography color="textSecondary" gutterBottom>
-                    {new Date(post.created_at).toLocaleDateString()} by {post.author}
+                    {new Date(post.created_at).toLocaleDateString()} by{" "}
+                    {post.author}
                   </Typography>
                   <Typography variant="body2" component="p">
                     {post.content.substring(0, 100)}...
@@ -91,7 +127,5 @@ export default function Home() {
         </div>
       </div>
     </Layout>
-  )
+  );
 }
-
-
