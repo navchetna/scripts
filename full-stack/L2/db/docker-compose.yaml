@@ -1,0 +1,20 @@
+version: "3"
+services:
+  db:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    cap_add:
+      - SYS_NICE
+    restart: always
+    environment:
+      - MYSQL_DATABASE=fullstack
+      - MYSQL_ROOT_PASSWORD=abcdefgh12345
+    ports:
+      - "3306:3306"
+    # volumes:
+    #   - db:/var/lib/mysql
+
+volumes:
+  db:
+    driver: local

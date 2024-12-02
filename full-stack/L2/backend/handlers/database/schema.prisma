@@ -1,0 +1,18 @@
+datasource db {
+  provider     = "mysql"
+  url          = "mysql://root:abcdefgh12345@localhost:3306/fullstack"
+  relationMode = "prisma"
+}
+
+generator client {
+  provider  = "prisma-client-py"
+  interface = "asyncio"
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  author    String
+  created_at DateTime @default(now())
+}
