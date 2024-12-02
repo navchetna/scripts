@@ -33,9 +33,9 @@ async def save_blog(blog: Post):
     return {"message": "Blog saved successfully"}
 
 @api_app.get("/blogs/{id}")
-async def get_blog_by_id(req: Request, id: str):
+async def get_blog_by_id(req: Request, id: int):
 
-    resp = await prisma.post.find_unique(where={"id": id})
+    resp = await prisma.post.find_first(where={"id": id})
     custom_logger.logger.info("Blog retrieved successfully with id: %s", resp.id)
     
     return {"message": "Blog retrieved successfully", "data": resp}
@@ -46,7 +46,7 @@ async def get_blogs(req: Request):
     return {"message": "Blogs retrieved successfully", "data": resp}
 
 @api_app.delete("/blogs/{id}")
-async def delete_blog_by_id(req: Request, id: str):
+async def delete_blog_by_id(req: Request, id: int):
     resp = await prisma.post.delete(where={"id": id})
     custom_logger.logger.info("Blog deleted successfully with id: %s", id)
 
@@ -54,8 +54,8 @@ async def delete_blog_by_id(req: Request, id: str):
     return {"message": "Blog deleted successfully"}
 
 
-@api_app.patch("/blogs/{id}")
-async def update_blog_by_id(req: Request, id: str, blog: Post):
+@api_app.put("/blogs/{id}")
+async def update_blog_by_id(req: Request, id: int, blog: Post):
     resp = await prisma.post.update(
         where={"id": id},
         data={

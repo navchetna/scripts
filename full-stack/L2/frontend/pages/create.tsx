@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Layout from '@/components/Layout'
 import { TextField, Button, Typography } from '@mui/material'
@@ -10,28 +10,60 @@ export default function CreatePost() {
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('')
   const router = useRouter()
+  const { action, id } = router.query
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // In a real application, you would send this data to an API
     console.log({ title, content, author })
-    try {
-      await axios.post(`${API_URL}/blogs`, {
-        title,
-        content,
-        author
-      })
-    } catch (err) {
-      console.error(err)
+    if (action === 'edit') {
+      try {
+        await axios.put(`${API_URL}/blogs/${id}`, {
+          title,
+          content,
+          author
+        })
+      } catch (err) {
+        console.error(err)
+      }
+    } else {
+      try {
+        await axios.post(`${API_URL}/blogs`, {
+          title,
+          content,
+          author
+        })
+      } catch (err) {
+        console.error(err)
+      }
     }
     // Redirect to home page after creation
     router.push('/')
   }
 
+  useEffect(() => {
+    if (action === 'edit') {
+      const fetchPost = async () => {
+        try {
+          const res = await axios.get(`${API_URL}/blogs/${id}`)
+          setTitle(res.data.data.title)
+          setContent(res.data.data.content)
+          setAuthor(res.data.data.author)
+        } catch (error) {
+          console.error(error)
+        }
+      }
+      fetchPost()
+    }
+  }, [action])
+
   return (
     <Layout>
       <Typography variant="h4" component="h1" gutterBottom>
-        Create New Post
+        {
+          action === 'edit' ? 'Edit' : 'Create'
+        }
+        Post
       </Typography>
       <form onSubmit={handleSubmit} className="space-y-4">
         <TextField

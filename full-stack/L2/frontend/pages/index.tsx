@@ -5,6 +5,7 @@ import { Card, CardContent, Typography, Button, Table, TableBody, TableCell, Tab
 import Link from 'next/link'
 import { API_URL } from '@/lib/const'
 import axios from 'axios'
+import { useRouter } from 'next/router'
 
 interface HomeProps {
   posts: BlogPost[]
@@ -13,6 +14,17 @@ interface HomeProps {
 export default function Home() {
   
   const [posts, setPosts] = useState<BlogPost[]>([])
+  const router = useRouter()
+
+  const handleDelete = async (id: number) => { 
+    try {
+      await axios.delete(`${API_URL}/blogs/${id}`)
+      setPosts(posts.filter(post => post.id !== id))
+    } catch (error) {
+      console.error(error)
+    }
+    router.push('/')
+  }
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -51,14 +63,26 @@ export default function Home() {
               {posts && posts.length > 0 ? (
                 posts.map((post) => (
                   <TableRow key={post.id}>
-                    <TableCell>{new Date(post.created_at).toLocaleDateString()}</TableCell>
+                    <TableCell>
+                      {new Date(post.created_at).toLocaleDateString()}
+                    </TableCell>
                     <TableCell>{post.title}</TableCell>
                     <TableCell>{post.author}</TableCell>
+                    <TableCell>
+                      <Button href={`/create?action=edit&id=${post.id}`}>
+                        Edit
+                      </Button>
+                      <Button onClick={() => handleDelete(post.id)}>
+                        Delete
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={3} align="center">No posts available.</TableCell>
+                  <TableCell colSpan={3} align="center">
+                    No posts available.
+                  </TableCell>
                 </TableRow>
               )}
             </TableBody>
@@ -77,7 +101,8 @@ export default function Home() {
                     {post.title}
                   </Typography>
                   <Typography color="textSecondary" gutterBottom>
-                    {new Date(post.created_at).toLocaleDateString()} by {post.author}
+                    {new Date(post.created_at).toLocaleDateString()} by{" "}
+                    {post.author}
                   </Typography>
                   <Typography variant="body2" component="p">
                     {post.content.substring(0, 100)}...
@@ -91,7 +116,7 @@ export default function Home() {
         </div>
       </div>
     </Layout>
-  )
+  );
 }
 
 
