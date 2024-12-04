@@ -1,5 +1,9 @@
 # Minikube
 
+## Pre-requistes
+1. [Docker](https://github.com/navchetna/scripts/tree/master/docker)
+
+## Installation
 1. Download the latest release with command
    ```
    curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
@@ -15,7 +19,11 @@
 4. Verify the installation
    ```
    kubectl version --client
-   ``` 
+   ```
+5. Start cluster
+   ```
+   minikube start
+   ```
 
 ## Reference
 
