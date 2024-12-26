@@ -8,4 +8,5 @@
 4. [WSL](wsl/README.md)
 5. [Git](git/README.md)
 6. [linux](linux/README.md)
+7. [PDF Parser](pdf-parser/README.md)
 
