@@ -1,0 +1,4 @@
+pdfplumber
+python-doctr
+python-doctr[torch]
+docling
