@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  vllm-1:
+    image: thebeginner86intel/vllm-cpu-env:latest
+    container_name: vllm-server-1
+    volumes:
+      - "/root/.cache/huggingface/hub:/root/.cache/huggingface/hub"
+    privileged: true
+    environment:
+      no_proxy: ${no_proxy}
+      http_proxy: ${http_proxy}
+      https_proxy: ${https_proxy}
+      VLLM_CPU_KVCACHE_SPACE: 8
+      HF_TOKEN : ${HUGGINGFACEHUB_API_TOKEN}
+    command: vllm serve ${MODEL} -tp=1 --distributed-executor-backend mp
+    ports:
+      - 8000:8000
