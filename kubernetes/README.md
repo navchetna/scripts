@@ -236,3 +236,7 @@ Use JSONPath to pull specific fields from resource output.
 # Get the names of all pods using JSONPath
 kubectl get pods -o jsonpath='{.items[*].metadata.name}'
 ```
+
+## Tutorial
+
+1. [Kubernetes Crash Course for Absolute Beginners](https://youtu.be/s_o8dwzRlu4?si=Bb2rWh8ql7ZMLwgI)
