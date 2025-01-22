@@ -10,4 +10,6 @@
 6. [linux](linux/README.md)
 7. [PDF Parser](pdf-parser/README.md)
 8. [KVM](kvm/README.md)
+9. [TGI](tgi/README.md)
+10. [vLLM](vllm/README.md)
 
