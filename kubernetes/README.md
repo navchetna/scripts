@@ -240,3 +240,4 @@ kubectl get pods -o jsonpath='{.items[*].metadata.name}'
 ## Tutorial
 
 1. [Kubernetes Crash Course for Absolute Beginners](https://youtu.be/s_o8dwzRlu4?si=Bb2rWh8ql7ZMLwgI)
+2. [Kubernetes Design Principles: Understand the Why](https://www.youtube.com/watch?v=ZuIQurh_kDk)
