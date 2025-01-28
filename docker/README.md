@@ -29,3 +29,4 @@ Docker Compose version v2.29.2
 
 1. [Docker Crash Course for Absolute Beginners](https://youtu.be/pg19Z8LL06w?si=1JRn5hFW7P4zV-gA)
 2. [Getting Started with Docker](https://www.youtube.com/watch?v=gAGEar5HQoU)
+3. [Docker Desktop for Windows](https://www.youtube.com/watch?v=rATNU0Fr8zs)
