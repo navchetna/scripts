@@ -104,3 +104,8 @@ password: <PASSWORD>
 > PASSWORD is the PASSWORD set while setting up OS
 
 > IP_HOST is the IP_HOST for virb0 network device. Run `ifconfig` to config
+
+
+## Tutorial
+
+1. https://www.youtube.com/watch?v=mAZNlyXVoT4
