@@ -92,7 +92,7 @@ class TreeParser:
                 list_headings.append(lis)
 
             for i in list_headings:
-                file.write(f"{i[1]};{i[2]};;;\n")
+                file.write(f"{i[1]};{i[2]}\n")
 
     def generate_toc_no_outline(self, filename):
         with open(os.path.join(OUTPUT_DIR, filename, filename + "_meta.json"), 'r') as file_meta:
